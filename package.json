@@ -14,6 +14,7 @@
     "moment-duration-format": "^2.3.2",
     "node-sass": "^4.14.1",
     "react": "^16.9.0",
+    "react-animated-modal": "^1.1.1",
     "react-dom": "^16.9.0",
     "react-full-screen": "^0.2.4",
     "react-router-dom": "^5.0.1",

@@ -11,6 +11,7 @@ export default class Account extends React.Component {
       cPassword: '',
       newPassword: '',
       rnewPassword: '',
+      closeModal: props.closeModal,
     };
   }
   changePass = () => {
@@ -22,14 +23,19 @@ export default class Account extends React.Component {
         new_password: this.state.newPassword,
       })
       .then(() => {
-        this.props.history.push('/');
+        this.props.closeModal();
       });
   };
   render() {
     return (
-      <div id="account-page">
+      <>
         <div style={{ display: !this.state.changePass ? 'auto' : 'none' }} className="main">
+          
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <h2>Account setting</h2>
+          <div id="shut" onClick={this.state.closeModal}>X</div>
+          </div>
+          <div></div>
           <table>
             <tr>
               <td>Fullname</td>
@@ -50,8 +56,12 @@ export default class Account extends React.Component {
         </div>
 
        { this.state.changePass ? <div className="main">
-          <h2>Change password</h2>
-          <label>Current password</label>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <h2>Change password</h2> 
+          <div id="shut" onClick={this.state.closeModal}>X</div>
+          </div>
+          <div>
+          <p>Current password</p>
           <input
             value={this.state.cPassword}
             onChange={e => {
@@ -59,7 +69,9 @@ export default class Account extends React.Component {
             }}
             type="password"
           />
-          <label>New password</label>
+          </div>
+          <div>
+          <p>New password</p>
           <input
             value={this.state.newPassword}
             onChange={e => {
@@ -67,7 +79,9 @@ export default class Account extends React.Component {
             }}
             type="password"
           />
-          <label>Type again</label>
+          </div>
+          <div>
+          <p>Type again</p>
           <input
             value={this.state.rnewPassword}
             onChange={e => {
@@ -75,11 +89,14 @@ export default class Account extends React.Component {
             }}
             type="password"
           />
+          </div>
+          <div>
           <button onClick={this.changePass} className="change-pass me-btn">
             Change password
           </button>
+          </div>
         </div>:null}
-      </div>
+      </>
     );
   }
 }

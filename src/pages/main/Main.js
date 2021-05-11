@@ -53,6 +53,7 @@ import Loader from 'components/Loader';
 import bytes from 'bytes';
 import { BASE_API_URL } from 'services/requests';
 import moment from 'moment';
+import Account from 'pages/account/Account';
 
 const files = [
   {
@@ -151,6 +152,7 @@ class Main extends React.Component {
           created_at: 1577120846,
         },
       ],
+      isShowed: false,
     };
   }
 
@@ -184,36 +186,36 @@ class Main extends React.Component {
 
     var folderData = [];
 
-    // if (this.isPhotoFolder() || this.isFavFolder() || this.isTrashFolder() || this.isSharedFolder()) {
-    //   await fileServices
-    //     .searchDetails({
-    //       only_photo: this.isPhotoFolder(),
-    //       star: this.isFavFolder(),
-    //       trash: this.isTrashFolder(),
-    //       share: this.isSharedFolder(),
-    //       basic_info: false,
-    //       _limit: 12,
-    //       _page: this.state.pageFolder,
-    //     })
-    //     .then(data => {
-    //       console.log(data);
-    //       folderData = data.result.files;
-    //       if (data.result.files.length < 12) this.setState({ loadEnd: true });
-    //     });
-    //   this.setState({ editableEntry: false, loading: false });
-    // } else {
-    //   await folderServices
-    //     .getDetails({
-    //       folder_id: this.props.match.params.path == 'home' ? localStorage.user_id : this.props.match.params.path,
-    //       _limit: 12,
-    //       _page: this.state.pageFolder,
-    //     })
-    //     .then(data => {
-    //       folderData = data.children_details;
-    //       this.setState({ parse_path: data.parse_urls, editableEntry: data.editable, isStar: !!data.star });
-    //       if (data.children_details.length < 12) this.setState({ loadEnd: true });
-    //     });
-    // }
+    if (this.isPhotoFolder() || this.isFavFolder() || this.isTrashFolder() || this.isSharedFolder()) {
+      await fileServices
+        .searchDetails({
+          only_photo: this.isPhotoFolder(),
+          star: this.isFavFolder(),
+          trash: this.isTrashFolder(),
+          share: this.isSharedFolder(),
+          basic_info: false,
+          _limit: 12,
+          _page: this.state.pageFolder,
+        })
+        .then(data => {
+          console.log(data);
+          folderData = data.result.files;
+          if (data.result.files.length < 12) this.setState({ loadEnd: true });
+        });
+      this.setState({ editableEntry: false, loading: false });
+    } else {
+      await folderServices
+        .getDetails({
+          folder_id: this.props.match.params.path == 'home' ? localStorage.user_id : this.props.match.params.path,
+          _limit: 12,
+          _page: this.state.pageFolder,
+        })
+        .then(data => {
+          folderData = data.children_details;
+          this.setState({ parse_path: data.parse_urls, editableEntry: data.editable, isStar: !!data.star });
+          if (data.children_details.length < 12) this.setState({ loadEnd: true });
+        });
+    }
 
     folderData = folderData.map(item => {
       return {
@@ -288,55 +290,55 @@ class Main extends React.Component {
   }
 
   loadFirst = () => {
-    // fileServices
-    //   .searchDetails({
-    //     file_id: localStorage.user_id,
-    //   })
-    //   .then(data => {
-    //     this.setState({ rootSize: data.result.files[0].size });
-    //   });
+    fileServices
+      .searchDetails({
+        file_id: localStorage.user_id,
+      })
+      .then(data => {
+        this.setState({ rootSize: data.result.files[0].size });
+      });
 
-    // fileServices
-    //   .searchDetails({
-    //     only_photo: true,
-    //     _limit: 4,
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       recentFiles: data.result.files.map(item => {
-    //         return {
-    //           id: item.file_id,
-    //           name: item.file_title,
-    //           type: item.file_type,
-    //           size: item.size,
-    //           stared: item.star,
-    //           isFolder: item.file_type == 'folder',
-    //           updated_at: item.updated_at,
-    //           thumbnail: item.thumbnail_url ? BASE_API_URL + 'download/thumbnail/' + item.file_id : false,
-    //         };
-    //       }),
-    //     });
-    //   });
+    fileServices
+      .searchDetails({
+        only_photo: true,
+        _limit: 4,
+      })
+      .then(data => {
+        this.setState({
+          recentFiles: data.result.files.map(item => {
+            return {
+              id: item.file_id,
+              name: item.file_title,
+              type: item.file_type,
+              size: item.size,
+              stared: item.star,
+              isFolder: item.file_type == 'folder',
+              updated_at: item.updated_at,
+              thumbnail: item.thumbnail_url ? BASE_API_URL + 'download/thumbnail/' + item.file_id : false,
+            };
+          }),
+        });
+      });
   };
 
   componentDidMount() {
-    // userServices
-    //   .fetchUserStatus()
-    //   .then(data => {
-    //     this.setState({ noti: data.notifications });
-    //     if (data.is_admin === true) {
-    //       this.props.history.push('/admin/dashboard');
-    //     } else {
-    //       // this.props.history.push('/drive/home');
-    //     }
-    //   })
-    //   .catch(() => {
-    //     this.props.history.push('/');
-    //   });
+    userServices
+      .fetchUserStatus()
+      .then(data => {
+        this.setState({ noti: data.notifications });
+        if (data.is_admin === true) {
+          this.props.history.push('/admin/dashboard');
+        } else {
+          // this.props.history.push('/drive/home');
+        }
+      })
+      .catch(() => {
+        this.props.history.push('/');
+      });
 
-    // this.loadFolder();
+    this.loadFolder();
 
-    // this.loadFirst();
+    this.loadFirst();
   }
 
   componentDidUpdate(prevProps) {
@@ -438,7 +440,7 @@ class Main extends React.Component {
 
   //open detail
 
-  openDetailTab = function() {};
+  openDetailTab = function () { };
 
   getInfo = () => {
     this.openNoti();
@@ -678,10 +680,10 @@ class Main extends React.Component {
             />
             {localStorage.fullname}
             <ul>
-              <Link to="/account">
+              {/* <Link to="/account">
                 <li>Account</li>
-              </Link>
-              <li>Terms of service</li>
+              </Link> */}
+              <li onClick={() => this.setState({ ...this.state,isShowed: true })}>Account</li>
               <li onClick={this.logout}>Logout</li>
             </ul>
           </div>
@@ -749,7 +751,7 @@ class Main extends React.Component {
           </ul>
 
           <div className="storage">
-            <h3 style={{color: 'white'}}>Storage</h3>
+            <h3 style={{ color: 'white' }}>Storage</h3>
             <p className="info">{bytes(this.state.rootSize, { decimalPlaces: 2 })} of 15GB used</p>
 
             <ProgressBar
@@ -967,9 +969,9 @@ AHihi
                 })}
                 {this.state.loading ? <img className="gif-loading" src="/img/loading.gif" /> : null}
                 {!this.state.loading &&
-                this.state.loadEnd &&
-                this.state.entryData &&
-                this.state.entryData.length == 0 ? (
+                  this.state.loadEnd &&
+                  this.state.entryData &&
+                  this.state.entryData.length == 0 ? (
                   <Nothing />
                 ) : null}
               </div>
@@ -986,6 +988,15 @@ AHihi
             </div>
           </div>
         </div>
+        <Modal
+          visible={this.state.isShowed}
+          closemodal={() => this.setState({ ...this.state,isShowed: false })}
+          type="lightSpeedIn"
+          id='account-page'
+        >
+          <Account closeModal={() => this.setState({...this.state, isShowed: false})}/>
+          </Modal>
+
       </div>
     );
   }

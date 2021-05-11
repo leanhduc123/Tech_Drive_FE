@@ -558,7 +558,7 @@ a {
       right: 0;
       bottom: 0;
       padding: inherit;
-
+      background-color: rgb(196, 196, 196);
       .explore {
         position: relative;
         height: 100%;
@@ -671,7 +671,7 @@ a {
           }
           .noti.tab,
           .detail.tab {
-            background: #fff;
+            background: #333;
             box-shadow: 0 0 18px rgba(0, 108, 108, 0.1);
             width: 100%;
             height: 100%;
@@ -692,6 +692,7 @@ a {
             box-sizing: border-box;
             .file-info {
               text-align: center;
+              color: #fff;
               .preview {
                 margin: auto;
                 margin-top: 9px;
@@ -716,6 +717,7 @@ a {
                 max-width: 100%;
                 width: 100%;
                 margin: auto;
+                color: #fff;
                 th,
                 td {
                   text-align: left;
@@ -731,6 +733,7 @@ a {
               padding: 16px 1em;
               cursor: pointer;
               transition: 0.25s;
+              color: #fff;
               &:hover {
                 background: rgba(0, 0, 0, 0.03);
               }

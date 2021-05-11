@@ -93,9 +93,6 @@ class ContextMenu extends React.Component {
                       <div onClick={this.props.onRename} className="item">
                         Rename
                       </div>
-                      <div onClick={this.starAction} className="item">
-                        {this.props.selectedEntry[0].stared ? 'Remove from' : 'Add to'} favorites
-                      </div>
                     </div>
                   ) : null}
                   <div onClick={this.props.onCut} className="item">
